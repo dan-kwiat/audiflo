@@ -1,34 +1,56 @@
-import React from "react";
-import AssistantButton from "@/components/AssistantButton/AssistantButton";
-import Image from "next/image";
+"use client"
 
-export default function page() {
+import { Button } from "@/components/button"
+import { use, useEffect, useState } from "react"
+import { PauseCircleIcon, PlayCircleIcon } from "@heroicons/react/16/solid"
+import { chunks } from "./chunks"
+import { playAudio } from "./play"
+import Record from "@/components/record"
+
+export default function Page() {
+  const [reading, setReading] = useState(false)
+  const [cursorIndex, setCursorIndex] = useState(0)
+  const [contextString, setContextString] = useState("")
+
+  useEffect(() => {
+    setContextString(chunks.slice(0, cursorIndex + 1).join("\n"))
+  }, [cursorIndex])
+
+  useEffect(() => {
+    if (reading) {
+      playAudio(chunks[cursorIndex], () => {
+        console.log("reading", reading, cursorIndex)
+        setCursorIndex((x) => x + 1)
+        // setReading(false)
+      })
+    }
+  }, [reading, cursorIndex])
+
   return (
     <div>
-      <div className="hidden md:block">
-        <main className="flex min-h-screen flex-col justify-center items-center p-24">
-          <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-            <Image
-              className=""
-              src="/font2.png"
-              alt="Main Logo"
-              width={650}
-              height={100}
-            />
-          </div>
-        </main>
-        <div className="absolute bottom-0 right-0 pb-10 pr-10">
-          <AssistantButton />
-        </div>
+      <div className="max-w-screen-lg mx-auto border-x p-4 space-y-4">
+        {chunks.map((x) => (
+          <p>{x}</p>
+        ))}
       </div>
-      <div className="md:hidden">
-        <main className="flex min-h-screen flex-col justify-center items-center p-24">
-          <div className=" font-semibold text-xl relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-            Please use a desktop browser for the best experience. (I'm working
-            on a mobile version)
-          </div>
-        </main>
+      <div className="fixed bottom-4 right-4">
+        <Button>
+          {reading ? (
+            <PauseCircleIcon
+              onClick={() => setReading(false)}
+              className="w-12 h-12"
+            />
+          ) : (
+            <PlayCircleIcon
+              onClick={() => setReading(true)}
+              className="w-12 h-12"
+            />
+          )}
+        </Button>
+      </div>
+      <div className="fixed bottom-4 left-4">
+        <Record contextString={contextString} />
       </div>
     </div>
-  );
+  )
 }

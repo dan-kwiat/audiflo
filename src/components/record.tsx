@@ -1,21 +1,10 @@
 "use client"
-import React, { useState, useEffect, useRef, ChangeEvent } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { Button } from "./button"
 import { MicrophoneIcon, SpeakerWaveIcon } from "@heroicons/react/16/solid"
-import { playAudio } from "@/app/read/play"
-
-interface VoiceSettings {
-  stability: number
-  similarity_boost: number
-}
-
-interface TextToSpeechData {
-  text: string
-  model_id: string
-  voice_settings: VoiceSettings
-}
+import { playAudio } from "@/app/play"
 
 function getPrompt(input: string, contextString: string): string {
   const prompt = `Here is an excerpt from an article:
@@ -34,9 +23,9 @@ Please answer the following question from a reader:
 export default function Record({ contextString }: { contextString: string }) {
   const [mediaRecorderInitialized, setMediaRecorderInitialized] =
     useState<boolean>(false)
-  const [audioPlaying, setAudioPlaying] = useState<boolean>(false)
-  const inputRef = useRef<HTMLInputElement | null>(null)
-  const [inputValue, setInputValue] = useState<string>("")
+  // const [audioPlaying, setAudioPlaying] = useState<boolean>(false)
+  // const inputRef = useRef<HTMLInputElement | null>(null)
+  // const [inputValue, setInputValue] = useState<string>("")
   const [recording, setRecording] = useState<boolean>(false)
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
   let chunks: BlobPart[] = []
@@ -48,8 +37,10 @@ export default function Record({ contextString }: { contextString: string }) {
   }, [mediaRecorder, mediaRecorderInitialized])
 
   const handlePlayButtonClick = (input: string): void => {
-    setAudioPlaying(true)
-    playAudio(input, () => setAudioPlaying(false))
+    // setAudioPlaying(true)
+    playAudio(input, () => {
+      // setAudioPlaying(false)
+    })
   }
 
   const startRecording = (): void => {
