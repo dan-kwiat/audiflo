@@ -26,3 +26,14 @@ Forked from https://github.com/ntegrals/voice-assistant-web
    ```
    npm run dev
    ```
+
+## How it works
+
+1. Text is chunked into sentences and passed through Elevenlabs with custom
+   voice
+2. When the reader pauses to ask a question, Whisper convert's their audio to
+   text
+3. The text question then goes to GPT 3.5 along with the recently spoken part of
+   the article for context
+4. The response from GPT is the passed through Elevenlabs to be spoken back to
+   the reader
