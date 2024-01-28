@@ -10,7 +10,8 @@ interface TextToSpeechData {
 }
 
 const CHUNK_SIZE = 1024
-const voiceId = "eXveFzitr3hBwS16SAe9"
+// const voiceId = "eXveFzitr3hBwS16SAe9" //generic middle aged man
+const voiceId = "P25p1uquqiW4omiQ3iXp" //paul graham
 const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`
 const headers: Record<string, string> = {
   Accept: "audio/mpeg",
@@ -53,7 +54,7 @@ export const playAudio = async (
 
     audioContext.decodeAudioData(audioBuffer, (buffer) => {
       source.buffer = buffer
-      source.playbackRate.value = 1.5
+      source.playbackRate.value = 1
 
       source.connect(audioContext.destination)
       source.start()

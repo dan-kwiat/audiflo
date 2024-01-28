@@ -82,7 +82,8 @@ export default function Page() {
           <p key={id}>{x}</p>
         ))}
       </article>
-      <div className="fixed bottom-4 right-4">
+      <div className="fixed bottom-4 right-4 space-y-2">
+        <Record contextString={contextString} />
         <Button>
           {reading ? (
             <PauseCircleIcon
@@ -97,9 +98,7 @@ export default function Page() {
           )}
         </Button>
       </div>
-      <div className="fixed bottom-4 left-4">
-        <Record contextString={contextString} />
-      </div>
+      <div className="fixed bottom-4 left-4"></div>
     </div>
   )
 }
