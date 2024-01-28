@@ -104,6 +104,7 @@ export default function Page() {
             )}
             onClick={() => {
               setCursorIndex(idx)
+              setReading(true)
             }}
           >
             {x}
