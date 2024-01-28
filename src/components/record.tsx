@@ -29,7 +29,7 @@ export default function Record({
   onResponse,
 }: {
   contextString: string
-  onClick: () => void
+  onClick: (recording: boolean) => void
   onResponse: ({
     question,
     response,
@@ -164,7 +164,7 @@ export default function Record({
     <div>
       <Button
         onClick={() => {
-          onClick()
+          onClick(recording)
           if (typeof window !== "undefined" && !mediaRecorderInitialized) {
             setMediaRecorderInitialized(true)
 

@@ -102,8 +102,16 @@ export default function Page() {
       <div className="fixed bottom-4 right-4 space-y-2">
         <Record
           contextString={contextString}
-          onClick={() => {
+          onClick={(recording) => {
             pause()
+            if (!recording) {
+              return
+            }
+            var audio = new Audio(`/audio/ding.mp3`)
+            audio.playbackRate = 1
+            audio.oncanplaythrough = () => {
+              audio.play()
+            }
           }}
           onResponse={({
             question,
