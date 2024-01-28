@@ -23,8 +23,6 @@ export const playAudio = async (
   input: string,
   onEnd: () => void
 ): Promise<void> => {
-  console.log("playAudio", input)
-
   const data: TextToSpeechData = {
     text: input,
     model_id: "eleven_multilingual_v2",

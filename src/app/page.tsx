@@ -30,8 +30,6 @@ export default function Page() {
     response: null,
   })
 
-  console.log("contextString", contextString)
-
   useEffect(() => {
     console.log("playing", cursorIndex)
     var audio = new Audio(`/audio/pg/audio-${cursorIndex}.mp3`)

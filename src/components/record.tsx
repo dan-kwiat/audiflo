@@ -19,7 +19,7 @@ Please answer the following question from a reader:
 "${input}"
 
 Answer directly and concisely.`
-  console.log(prompt)
+  console.log("PROMPT", prompt)
   return prompt
 }
 
@@ -38,6 +38,8 @@ export default function Record({
     response: string | null
   }) => void
 }) {
+  console.log("CONTEXT", contextString)
+
   const [mediaRecorderInitialized, setMediaRecorderInitialized] =
     useState<boolean>(false)
   // const [audioPlaying, setAudioPlaying] = useState<boolean>(false)
@@ -81,6 +83,78 @@ export default function Record({
       position: "top-right",
     })
     if (mediaRecorder) {
+      mediaRecorder.onstart = () => {
+        chunks = []
+      }
+
+      mediaRecorder.ondataavailable = (e) => {
+        chunks.push(e.data)
+      }
+
+      mediaRecorder.onstop = async () => {
+        console.time("Entire function")
+
+        const audioBlob = new Blob(chunks, { type: "audio/webm" })
+        const audioUrl = URL.createObjectURL(audioBlob)
+        const audio = new Audio(audioUrl)
+
+        audio.onerror = function (err) {
+          console.error("Error playing audio:", err)
+        }
+
+        try {
+          const reader = new FileReader()
+          reader.readAsDataURL(audioBlob)
+
+          reader.onloadend = async function () {
+            const base64Audio = (reader.result as string).split(",")[1] // Ensure result is not null or undefined
+
+            if (base64Audio) {
+              const response = await fetch("/api/speechToText", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ audio: base64Audio }),
+              })
+
+              const data = await response.json()
+
+              if (response.status !== 200) {
+                throw (
+                  data.error ||
+                  new Error(`Request failed with status ${response.status}`)
+                )
+              }
+
+              onResponse({
+                question: data.result,
+                response: null,
+              })
+
+              console.timeEnd("Speech to Text")
+
+              const completion = await axios.post("/api/chat", {
+                messages: [
+                  {
+                    role: "user",
+                    content: getPrompt(data.result, contextString),
+                  },
+                ],
+              })
+
+              onResponse({
+                question: data.result,
+                response: completion.data,
+              })
+
+              handlePlayButtonClick(completion.data)
+            }
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
       mediaRecorder.stop()
       setRecording(false)
     }
@@ -98,83 +172,6 @@ export default function Record({
               .getUserMedia({ audio: true })
               .then((stream) => {
                 const newMediaRecorder = new MediaRecorder(stream)
-
-                newMediaRecorder.onstart = () => {
-                  chunks = []
-                }
-
-                newMediaRecorder.ondataavailable = (e) => {
-                  chunks.push(e.data)
-                }
-
-                newMediaRecorder.onstop = async () => {
-                  console.time("Entire function")
-
-                  const audioBlob = new Blob(chunks, { type: "audio/webm" })
-                  const audioUrl = URL.createObjectURL(audioBlob)
-                  const audio = new Audio(audioUrl)
-
-                  audio.onerror = function (err) {
-                    console.error("Error playing audio:", err)
-                  }
-
-                  try {
-                    const reader = new FileReader()
-                    reader.readAsDataURL(audioBlob)
-
-                    reader.onloadend = async function () {
-                      const base64Audio = (reader.result as string).split(
-                        ","
-                      )[1] // Ensure result is not null or undefined
-
-                      if (base64Audio) {
-                        const response = await fetch("/api/speechToText", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify({ audio: base64Audio }),
-                        })
-
-                        const data = await response.json()
-
-                        if (response.status !== 200) {
-                          throw (
-                            data.error ||
-                            new Error(
-                              `Request failed with status ${response.status}`
-                            )
-                          )
-                        }
-
-                        onResponse({
-                          question: data.result,
-                          response: null,
-                        })
-
-                        console.timeEnd("Speech to Text")
-
-                        const completion = await axios.post("/api/chat", {
-                          messages: [
-                            {
-                              role: "user",
-                              content: getPrompt(data.result, contextString),
-                            },
-                          ],
-                        })
-
-                        onResponse({
-                          question: data.result,
-                          response: completion.data,
-                        })
-
-                        handlePlayButtonClick(completion.data)
-                      }
-                    }
-                  } catch (error) {
-                    console.log(error)
-                  }
-                }
 
                 setMediaRecorder(newMediaRecorder)
               })
