@@ -59,6 +59,7 @@ export default function Page() {
       audioRef.current.playbackRate = speed
     }
     audioRef.current?.play()
+    setReading(true)
   }, [speed])
 
   function play() {
@@ -94,11 +95,7 @@ export default function Page() {
         {/* <div className="max-w-screen-lg mx-auto border-x p-4 space-y-4"> */}
         <h1>Crazy New Ideas</h1>
         <h5>May 2021</h5>
-        <div className="space-x-2">
-          <Button onClick={() => setSpeed(1)}>1x</Button>
-          <Button onClick={() => setSpeed(1.5)}>1.5x</Button>
-          <Button onClick={() => setSpeed(2)}>2x</Button>
-        </div>
+
         <hr />
         {chunks.map((x, idx) => (
           <p
@@ -163,6 +160,17 @@ export default function Page() {
               value={[cursorIndex + 1]}
               onChangeEnd={([value]) => setCursorIndex(value - 1)}
             />
+            <Button
+              onClick={() => {
+                if (speed >= 2) {
+                  setSpeed(1)
+                } else {
+                  setSpeed(speed + 0.5)
+                }
+              }}
+            >
+              {speed}x
+            </Button>
           </div>
         </div>
         {/* <AudioPlayer /> */}
