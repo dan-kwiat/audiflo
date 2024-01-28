@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "run-script": "npx ts-node --project tsconfig-scripts.json -r tsconfig-paths/register"
   },
   "dependencies": {
     "@headlessui/react": "^2.0.0-alpha.4",
@@ -34,7 +35,11 @@
     "whisper-speech-to-text": "^1.0.3"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@types/recorder-js": "^1.0.3",
-    "encoding": "^0.1.13"
+    "dotenv": "^16.4.1",
+    "encoding": "^0.1.13",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
   }
 }
