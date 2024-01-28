@@ -14,6 +14,7 @@ import {
   AlertTitle,
 } from "@/components/alert"
 import clsx from "clsx"
+import { Slider } from "@/components/player/Slider"
 
 export default function Page() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -87,7 +88,6 @@ export default function Page() {
   //     })
   //   }
   // }, [reading, cursorIndex])
-
   return (
     <div className="pt-12 pb-24 lg:py-24">
       <article className="prose lg:prose-2xl mx-auto dark:prose-invert px-2">
@@ -115,43 +115,58 @@ export default function Page() {
           </p>
         ))}
       </article>
-      <div className="fixed bottom-4 right-4 space-y-2">
-        <Record
-          contextString={contextString}
-          onClick={(recording) => {
-            pause()
-            if (!recording) {
-              return
-            }
-            var audio = new Audio(`/audio/ding.mp3`)
-            audio.playbackRate = 1
-            audio.oncanplaythrough = () => {
-              audio.play()
-            }
-          }}
-          onResponse={({
-            question,
-            response,
-          }: {
-            question: string | null
-            response: string | null
-          }) => {
-            setAlertState({
-              open: true,
-              question,
-              response,
-            })
-          }}
-        />
-        <Button>
-          {reading ? (
-            <PauseCircleIcon onClick={() => pause()} className="w-12 h-12" />
-          ) : (
-            <PlayCircleIcon onClick={() => play()} className="w-12 h-12" />
-          )}
-        </Button>
+      <div className="fixed bottom-4 right-4 space-y-2"></div>
+      <div className="fixed inset-x-0 bottom-0 z-10 lg:left-112 xl:left-120">
+        <div className="bg-white/90 px-4 py-4 shadow shadow-slate-200/80 ring-1 ring-slate-900/5 backdrop-blur-sm md:px-6">
+          <div className="max-w-screen-lg mx-auto flex items-center gap-6 ">
+            <Button>
+              {reading ? (
+                <PauseCircleIcon
+                  onClick={() => pause()}
+                  className="w-12 h-12"
+                />
+              ) : (
+                <PlayCircleIcon onClick={() => play()} className="w-12 h-12" />
+              )}
+            </Button>
+            <Record
+              contextString={contextString}
+              onClick={(recording) => {
+                pause()
+                if (!recording) {
+                  return
+                }
+                var audio = new Audio(`/audio/ding.mp3`)
+                audio.playbackRate = 1
+                audio.oncanplaythrough = () => {
+                  audio.play()
+                }
+              }}
+              onResponse={({
+                question,
+                response,
+              }: {
+                question: string | null
+                response: string | null
+              }) => {
+                setAlertState({
+                  open: true,
+                  question,
+                  response,
+                })
+              }}
+            />
+            <Slider
+              numberFormatter={{ format: (x) => `${x}x` } as Intl.NumberFormat}
+              maxValue={chunks.length}
+              step={1}
+              value={[cursorIndex + 1]}
+              onChangeEnd={([value]) => setCursorIndex(value - 1)}
+            />
+          </div>
+        </div>
+        {/* <AudioPlayer /> */}
       </div>
-      <div className="fixed bottom-4 left-4"></div>
       <Alert
         open={alertState.open}
         onClose={() => setAlertState((prev) => ({ ...prev, open: false }))}
