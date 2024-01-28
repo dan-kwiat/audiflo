@@ -43,6 +43,9 @@ async function persistAudio(id: string, text: string) {
     }
 
     // write audio response to file with fs
+    if (!response.body) {
+      throw new Error("No response body.")
+    }
     const reader = response.body.getReader()
     const writer = fs.createWriteStream(`./data/pg/audio-${id}.mp3`)
 
