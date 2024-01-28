@@ -16,7 +16,9 @@ ${contextString}
 
 Please answer the following question from a reader:
 
-"${input}"`
+"${input}"
+
+Answer directly and concisely.`
   console.log(prompt)
   return prompt
 }
@@ -24,9 +26,17 @@ Please answer the following question from a reader:
 export default function Record({
   contextString,
   onClick,
+  onResponse,
 }: {
   contextString: string
   onClick: () => void
+  onResponse: ({
+    question,
+    response,
+  }: {
+    question: string | null
+    response: string | null
+  }) => void
 }) {
   const [mediaRecorderInitialized, setMediaRecorderInitialized] =
     useState<boolean>(false)
@@ -137,6 +147,11 @@ export default function Record({
                           )
                         }
 
+                        onResponse({
+                          question: data.result,
+                          response: null,
+                        })
+
                         console.timeEnd("Speech to Text")
 
                         const completion = await axios.post("/api/chat", {
@@ -146,6 +161,11 @@ export default function Record({
                               content: getPrompt(data.result, contextString),
                             },
                           ],
+                        })
+
+                        onResponse({
+                          question: data.result,
+                          response: completion.data,
                         })
 
                         handlePlayButtonClick(completion.data)

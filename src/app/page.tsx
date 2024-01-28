@@ -7,12 +7,30 @@ import { chunks } from "./chunks-pg"
 // import { playAudio } from "./play"
 import Record from "@/components/record"
 
+import {
+  Alert,
+  AlertActions,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/alert"
+
 export default function Page() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [reading, setReading] = useState(false)
   const [cursorIndex, setCursorIndex] = useState(0)
   const [contextString, setContextString] = useState("")
   const [speed, setSpeed] = useState(1)
+  let [alertState, setAlertState] = useState<{
+    open: boolean
+    question: string | null
+    response: string | null
+  }>({
+    open: false,
+    question: null,
+    response: null,
+  })
+
+  console.log("contextString", contextString)
 
   useEffect(() => {
     console.log("playing", cursorIndex)
@@ -89,6 +107,19 @@ export default function Page() {
           onClick={() => {
             pause()
           }}
+          onResponse={({
+            question,
+            response,
+          }: {
+            question: string | null
+            response: string | null
+          }) => {
+            setAlertState({
+              open: true,
+              question,
+              response,
+            })
+          }}
         />
         <Button>
           {reading ? (
@@ -99,6 +130,20 @@ export default function Page() {
         </Button>
       </div>
       <div className="fixed bottom-4 left-4"></div>
+      <Alert
+        open={alertState.open}
+        onClose={() => setAlertState((prev) => ({ ...prev, open: false }))}
+      >
+        <AlertTitle>{alertState.question}</AlertTitle>
+        <AlertDescription>{alertState.response}</AlertDescription>
+        <AlertActions>
+          <Button
+            onClick={() => setAlertState((prev) => ({ ...prev, open: false }))}
+          >
+            Close
+          </Button>
+        </AlertActions>
+      </Alert>
     </div>
   )
 }
