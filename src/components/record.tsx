@@ -8,7 +8,7 @@ import { playAudio } from "@/app/play"
 import clsx from "clsx"
 
 function getPrompt(input: string, contextString: string): string {
-  const prompt = `Here is an excerpt from an article:
+  const prompt = `Here is an excerpt from an article titled "Crazy New Ideas" by Paul Graham the essayist, entrepreneur and investor.
 
 <excerpt>
 ${contextString}
