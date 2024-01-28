@@ -18,7 +18,7 @@ import clsx from "clsx"
 export default function Page() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [reading, setReading] = useState(false)
-  const [cursorIndex, setCursorIndex] = useState(0)
+  const [cursorIndex, setCursorIndex] = useState(-1)
   const [contextString, setContextString] = useState("")
   const [speed, setSpeed] = useState(1)
   let [alertState, setAlertState] = useState<{
@@ -36,7 +36,7 @@ export default function Page() {
     var audio = new Audio(`/audio/pg/audio-${cursorIndex}.mp3`)
     audioRef.current = audio
     audio.playbackRate = speed
-    if (cursorIndex > 0) {
+    if (cursorIndex > -1) {
       audio.oncanplaythrough = () => {
         console.log("canplaythrough", cursorIndex)
         audio.play()
@@ -61,6 +61,10 @@ export default function Page() {
   }, [speed])
 
   function play() {
+    if (cursorIndex === -1) {
+      setCursorIndex(0)
+      // return
+    }
     audioRef?.current?.play()
     setReading(true)
   }
