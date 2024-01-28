@@ -13,7 +13,8 @@ import { chunks } from "../src/app/chunks-pg"
 // }
 
 const CHUNK_SIZE = 1024
-const voiceId = "eXveFzitr3hBwS16SAe9"
+// const voiceId = "eXveFzitr3hBwS16SAe9" //generic middle aged man
+const voiceId = "P25p1uquqiW4omiQ3iXp" //paul graham
 const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`
 const headers = {
   Accept: "audio/mpeg",
