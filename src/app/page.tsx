@@ -1,77 +1,77 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/button"
-import { useEffect, useRef, useState } from "react"
-import { PauseCircleIcon, PlayCircleIcon } from "@heroicons/react/16/solid"
-import { chunks } from "./chunks-pg"
+import { Button } from "@/components/button";
+import { useEffect, useRef, useState } from "react";
+import { PauseCircleIcon, PlayCircleIcon } from "@heroicons/react/16/solid";
+import { chunks } from "./chunks-pg";
 // import { playAudio } from "./play"
-import Record from "@/components/record"
+import Record from "@/components/record";
 
 import {
   Alert,
   AlertActions,
   AlertDescription,
   AlertTitle,
-} from "@/components/alert"
+} from "@/components/alert";
 
 export default function Page() {
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [reading, setReading] = useState(false)
-  const [cursorIndex, setCursorIndex] = useState(0)
-  const [contextString, setContextString] = useState("")
-  const [speed, setSpeed] = useState(1)
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [reading, setReading] = useState(false);
+  const [cursorIndex, setCursorIndex] = useState(0);
+  const [contextString, setContextString] = useState("");
+  const [speed, setSpeed] = useState(1);
   let [alertState, setAlertState] = useState<{
-    open: boolean
-    question: string | null
-    response: string | null
+    open: boolean;
+    question: string | null;
+    response: string | null;
   }>({
     open: false,
     question: null,
     response: null,
-  })
+  });
 
   useEffect(() => {
-    console.log("playing", cursorIndex)
-    var audio = new Audio(`/audio/pg/audio-${cursorIndex}.mp3`)
-    audioRef.current = audio
-    audio.playbackRate = speed
+    console.log("playing", cursorIndex);
+    var audio = new Audio(`/audio/pg/audio-${cursorIndex}.mp3`);
+    audioRef.current = audio;
+    audio.playbackRate = speed;
     if (cursorIndex > 0) {
       audio.oncanplaythrough = () => {
-        console.log("canplaythrough", cursorIndex)
-        audio.play()
-      }
+        console.log("canplaythrough", cursorIndex);
+        audio.play();
+      };
     }
 
     audio.onended = () => {
-      console.log("ended", cursorIndex)
-      setCursorIndex((x) => x + 1)
-    }
+      console.log("ended", cursorIndex);
+      setCursorIndex((x) => x + 1);
+    };
     return () => {
-      audio.pause()
-    }
-  }, [cursorIndex])
+      audio.pause();
+    };
+  }, [cursorIndex]);
 
   useEffect(() => {
-    audioRef.current?.pause()
+    audioRef.current?.pause();
     if (audioRef.current?.playbackRate) {
-      audioRef.current.playbackRate = speed
+      audioRef.current.playbackRate = speed;
     }
-    audioRef.current?.play()
-  }, [speed])
+    audioRef.current?.play();
+  }, [speed]);
 
   function play() {
-    audioRef?.current?.play()
-    setReading(true)
+    audioRef?.current?.play();
+    setReading(true);
   }
 
   function pause() {
-    audioRef?.current?.pause()
-    setReading(false)
+    audioRef?.current?.pause();
+    setReading(false);
   }
 
   useEffect(() => {
-    setContextString(chunks.slice(0, cursorIndex + 1).join("\n"))
-  }, [cursorIndex])
+    setContextString(chunks.slice(0, cursorIndex + 1).join("\n"));
+  }, [cursorIndex]);
 
   // useEffect(() => {
   //   if (reading) {
@@ -103,28 +103,28 @@ export default function Page() {
         <Record
           contextString={contextString}
           onClick={(recording) => {
-            pause()
+            pause();
             if (!recording) {
-              return
+              return;
             }
-            var audio = new Audio(`/audio/ding.mp3`)
-            audio.playbackRate = 1
+            var audio = new Audio(`/audio/ding.mp3`);
+            audio.playbackRate = 1;
             audio.oncanplaythrough = () => {
-              audio.play()
-            }
+              audio.play();
+            };
           }}
           onResponse={({
             question,
             response,
           }: {
-            question: string | null
-            response: string | null
+            question: string | null;
+            response: string | null;
           }) => {
             setAlertState({
               open: true,
               question,
               response,
-            })
+            });
           }}
         />
         <Button>
@@ -144,12 +144,15 @@ export default function Page() {
         <AlertDescription>{alertState.response}</AlertDescription>
         <AlertActions>
           <Button
-            onClick={() => setAlertState((prev) => ({ ...prev, open: false }))}
+            onClick={() => {
+              setAlertState((prev) => ({ ...prev, open: false }));
+              play(); // Call the play function to start playing the audio
+            }}
           >
             Close
           </Button>
         </AlertActions>
       </Alert>
     </div>
-  )
+  );
 }
