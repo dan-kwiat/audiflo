@@ -43,13 +43,14 @@ export default function Page() {
     audioRef.current?.play()
   }, [speed])
 
-  function togglePlay() {
-    if (reading) {
-      audioRef?.current?.pause()
-    } else {
-      audioRef?.current?.play()
-    }
-    setReading((x) => !x)
+  function play() {
+    audioRef?.current?.play()
+    setReading(true)
+  }
+
+  function pause() {
+    audioRef?.current?.pause()
+    setReading(false)
   }
 
   useEffect(() => {
@@ -83,18 +84,17 @@ export default function Page() {
         ))}
       </article>
       <div className="fixed bottom-4 right-4 space-y-2">
-        <Record contextString={contextString} />
+        <Record
+          contextString={contextString}
+          onClick={() => {
+            pause()
+          }}
+        />
         <Button>
           {reading ? (
-            <PauseCircleIcon
-              onClick={() => togglePlay()}
-              className="w-12 h-12"
-            />
+            <PauseCircleIcon onClick={() => pause()} className="w-12 h-12" />
           ) : (
-            <PlayCircleIcon
-              onClick={() => togglePlay()}
-              className="w-12 h-12"
-            />
+            <PlayCircleIcon onClick={() => play()} className="w-12 h-12" />
           )}
         </Button>
       </div>

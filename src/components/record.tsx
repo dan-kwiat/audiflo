@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { Button } from "./button"
-import { MicrophoneIcon, SpeakerWaveIcon } from "@heroicons/react/16/solid"
+import { MicrophoneIcon } from "@heroicons/react/16/solid"
 import { playAudio } from "@/app/play"
+import clsx from "clsx"
 
 function getPrompt(input: string, contextString: string): string {
   const prompt = `Here is an excerpt from an article:
@@ -20,7 +21,13 @@ Please answer the following question from a reader:
   return prompt
 }
 
-export default function Record({ contextString }: { contextString: string }) {
+export default function Record({
+  contextString,
+  onClick,
+}: {
+  contextString: string
+  onClick: () => void
+}) {
   const [mediaRecorderInitialized, setMediaRecorderInitialized] =
     useState<boolean>(false)
   // const [audioPlaying, setAudioPlaying] = useState<boolean>(false)
@@ -73,6 +80,7 @@ export default function Record({ contextString }: { contextString: string }) {
     <div>
       <Button
         onClick={() => {
+          onClick()
           if (typeof window !== "undefined" && !mediaRecorderInitialized) {
             setMediaRecorderInitialized(true)
 
@@ -190,11 +198,12 @@ export default function Record({ contextString }: { contextString: string }) {
         }}
         // className="hover:scale-105 ease-in-out duration-500 hover:cursor-pointer text-[70px]"
       >
-        {recording ? (
-          <SpeakerWaveIcon className="w-12 h-12" />
-        ) : (
-          <MicrophoneIcon className="w-12 h-12" />
-        )}
+        <MicrophoneIcon
+          className={clsx(
+            `w-12 h-12 !text-red-500`,
+            recording ? "animate-pulse" : ""
+          )}
+        />
       </Button>
     </div>
   )
