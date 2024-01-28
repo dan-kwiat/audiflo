@@ -96,7 +96,7 @@ export default function Page() {
         <h2 className="uppercase text-gray-400 dark:text-gray-800">
           Paul Graham
         </h2>
-        <h1>Crazy New Ideas</h1>
+        <h1 className="text-red-900 dark:text-red-700">Crazy New Ideas</h1>
         <p className="text-gray-400 dark:text-gray-500 font-medium">May 2021</p>
 
         <hr />
