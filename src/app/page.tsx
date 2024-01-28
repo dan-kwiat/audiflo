@@ -89,7 +89,7 @@ export default function Page() {
   //   }
   // }, [reading, cursorIndex])
   return (
-    <div className="pt-12 pb-24 lg:py-24">
+    <div className="pt-12 pb-36 lg:pt-24">
       <article className="prose lg:prose-2xl mx-auto dark:prose-invert px-2">
         {/* <div className="max-w-screen-lg mx-auto border-x p-4 space-y-4"> */}
         <h1>Crazy New Ideas</h1>
