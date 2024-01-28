@@ -93,8 +93,11 @@ export default function Page() {
     <div className="pt-12 pb-36 lg:pt-24">
       <article className="prose lg:prose-2xl mx-auto dark:prose-invert px-2">
         {/* <div className="max-w-screen-lg mx-auto border-x p-4 space-y-4"> */}
+        <h2 className="uppercase text-gray-400 dark:text-gray-800">
+          Paul Graham
+        </h2>
         <h1>Crazy New Ideas</h1>
-        <h5>May 2021</h5>
+        <p className="text-gray-400 dark:text-gray-500 font-medium">May 2021</p>
 
         <hr />
         {chunks.map((x, idx) => (
