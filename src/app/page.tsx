@@ -54,18 +54,14 @@ export default function Page() {
   }, [cursorIndex])
 
   useEffect(() => {
-    audioRef.current?.pause()
     if (audioRef.current?.playbackRate) {
       audioRef.current.playbackRate = speed
     }
-    audioRef.current?.play()
-    setReading(true)
   }, [speed])
 
   function play() {
     if (cursorIndex === -1) {
       setCursorIndex(0)
-      // return
     }
     audioRef?.current?.play()
     setReading(true)
