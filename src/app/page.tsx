@@ -90,10 +90,14 @@ export default function Page() {
       <article className="prose lg:prose-2xl mx-auto dark:prose-invert px-2">
         {/* <div className="max-w-screen-lg mx-auto border-x p-4 space-y-4"> */}
         <h2 className="uppercase text-gray-400 dark:text-gray-800">
-          Paul Graham
+          The New Testament
         </h2>
-        <h1 className="text-red-900 dark:text-red-700">Crazy New Ideas</h1>
-        <p className="text-gray-400 dark:text-gray-500 font-medium">May 2021</p>
+        <h1 className="text-red-900 dark:text-red-700">
+          The Epistle of Paul the Apostle to the Philemon
+        </h1>
+        <p className="text-gray-400 dark:text-gray-500 font-medium">
+          A long time ago
+        </p>
 
         <hr />
         {chunks.map((x, idx) => (
