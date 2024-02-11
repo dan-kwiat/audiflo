@@ -33,6 +33,8 @@ async function persistAudio(id: string, text: string) {
     voice_settings: {
       stability: 0.5,
       similarity_boost: 0.5,
+      style: 0.5,
+      use_speaker_boost: true,
     },
   }
 
