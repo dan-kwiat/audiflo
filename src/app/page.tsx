@@ -1,80 +1,80 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/button"
-import { useEffect, useRef, useState } from "react"
-import { PauseCircleIcon, PlayCircleIcon } from "@heroicons/react/16/solid"
-import { chunks } from "./chunks-pg"
+import { Button } from "@/components/button";
+import { useEffect, useRef, useState } from "react";
+import { PauseCircleIcon, PlayCircleIcon } from "@heroicons/react/16/solid";
+import { chunks } from "./chunks-TFPG.ts";
 // import { playAudio } from "./play"
-import Record from "@/components/record"
+import Record from "@/components/record";
 
 import {
   Alert,
   AlertActions,
   AlertDescription,
   AlertTitle,
-} from "@/components/alert"
-import clsx from "clsx"
-import { Slider } from "@/components/player/Slider"
+} from "@/components/alert";
+import clsx from "clsx";
+import { Slider } from "@/components/player/Slider";
 
 export default function Page() {
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [reading, setReading] = useState(false)
-  const [cursorIndex, setCursorIndex] = useState(-1)
-  const [contextString, setContextString] = useState("")
-  const [speed, setSpeed] = useState(1)
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [reading, setReading] = useState(false);
+  const [cursorIndex, setCursorIndex] = useState(-1);
+  const [contextString, setContextString] = useState("");
+  const [speed, setSpeed] = useState(1);
   let [alertState, setAlertState] = useState<{
-    open: boolean
-    question: string | null
-    response: string | null
+    open: boolean;
+    question: string | null;
+    response: string | null;
   }>({
     open: false,
     question: null,
     response: null,
-  })
+  });
 
   useEffect(() => {
-    console.log("playing", cursorIndex)
-    var audio = new Audio(`/audio/pg/audio-${cursorIndex}.mp3`)
-    audioRef.current = audio
-    audio.playbackRate = speed
+    console.log("playing", cursorIndex);
+    var audio = new Audio(`/audio/pg/audio-${cursorIndex}.mp3`);
+    audioRef.current = audio;
+    audio.playbackRate = speed;
     if (cursorIndex > -1) {
       audio.oncanplaythrough = () => {
-        console.log("canplaythrough", cursorIndex)
-        audio.play()
-      }
+        console.log("canplaythrough", cursorIndex);
+        audio.play();
+      };
     }
 
     audio.onended = () => {
-      console.log("ended", cursorIndex)
-      setCursorIndex((x) => x + 1)
-    }
+      console.log("ended", cursorIndex);
+      setCursorIndex((x) => x + 1);
+    };
     return () => {
-      audio.pause()
-    }
-  }, [cursorIndex])
+      audio.pause();
+    };
+  }, [cursorIndex]);
 
   useEffect(() => {
     if (audioRef.current?.playbackRate) {
-      audioRef.current.playbackRate = speed
+      audioRef.current.playbackRate = speed;
     }
-  }, [speed])
+  }, [speed]);
 
   function play() {
     if (cursorIndex === -1) {
-      setCursorIndex(0)
+      setCursorIndex(0);
     }
-    audioRef?.current?.play()
-    setReading(true)
+    audioRef?.current?.play();
+    setReading(true);
   }
 
   function pause() {
-    audioRef?.current?.pause()
-    setReading(false)
+    audioRef?.current?.pause();
+    setReading(false);
   }
 
   useEffect(() => {
-    setContextString(chunks.slice(0, cursorIndex + 1).join("\n"))
-  }, [cursorIndex])
+    setContextString(chunks.slice(0, cursorIndex + 1).join("\n"));
+  }, [cursorIndex]);
 
   // useEffect(() => {
   //   if (reading) {
@@ -90,15 +90,11 @@ export default function Page() {
       <article className="prose lg:prose-2xl mx-auto dark:prose-invert px-2">
         {/* <div className="max-w-screen-lg mx-auto border-x p-4 space-y-4"> */}
         <h2 className="uppercase text-gray-400 dark:text-gray-800">
-          The New Testament
+          The Final Pagan Generation
         </h2>
-        <h1 className="text-red-900 dark:text-red-700">
-          The Epistle of Paul the Apostle to the Philemon
-        </h1>
-        <p className="text-gray-400 dark:text-gray-500 font-medium">
-          A long time ago
-        </p>
-
+        <h1 className="text-black dark:text-red-700">Chapter 7</h1>
+        <p className="text-gray-400 dark:text-gray-500 font-medium"></p>
+        Christian Youth Culture in the 360s and 370s
         <hr />
         {chunks.map((x, idx) => (
           <p
@@ -107,8 +103,8 @@ export default function Page() {
               cursorIndex === idx ? "bg-yellow-100 dark:bg-yellow-900" : ""
             )}
             onClick={() => {
-              setCursorIndex(idx)
-              setReading(true)
+              setCursorIndex(idx);
+              setReading(true);
             }}
           >
             {x}
@@ -132,28 +128,28 @@ export default function Page() {
             <Record
               contextString={contextString}
               onClick={(recording) => {
-                pause()
+                pause();
                 if (!recording) {
-                  return
+                  return;
                 }
-                var audio = new Audio(`/audio/ding.mp3`)
-                audio.playbackRate = 1
+                var audio = new Audio(`/audio/ding.mp3`);
+                audio.playbackRate = 1;
                 audio.oncanplaythrough = () => {
-                  audio.play()
-                }
+                  audio.play();
+                };
               }}
               onResponse={({
                 question,
                 response,
               }: {
-                question: string | null
-                response: string | null
+                question: string | null;
+                response: string | null;
               }) => {
                 setAlertState({
                   open: true,
                   question,
                   response,
-                })
+                });
               }}
             />
             <Slider
@@ -166,9 +162,9 @@ export default function Page() {
             <Button
               onClick={() => {
                 if (speed >= 2) {
-                  setSpeed(1)
+                  setSpeed(1);
                 } else {
-                  setSpeed(speed + 0.5)
+                  setSpeed(speed + 0.5);
                 }
               }}
             >
@@ -188,15 +184,15 @@ export default function Page() {
           <Button
             plain
             onClick={() => {
-              setAlertState((prev) => ({ ...prev, open: false }))
+              setAlertState((prev) => ({ ...prev, open: false }));
             }}
           >
             Close
           </Button>
           <Button
             onClick={() => {
-              setAlertState((prev) => ({ ...prev, open: false }))
-              play()
+              setAlertState((prev) => ({ ...prev, open: false }));
+              play();
             }}
           >
             Continue
@@ -204,5 +200,5 @@ export default function Page() {
         </AlertActions>
       </Alert>
     </div>
-  )
+  );
 }
