@@ -1,6 +1,6 @@
 require("dotenv").config({ path: ".env.local" });
 import fs from "fs";
-import { chunks } from "../src/app/chunks-pg";
+import { chunks } from "../src/app/chunks-TFPG";
 // interface VoiceSettings {
 //   stability: number
 //   similarity_boost: number
@@ -12,7 +12,7 @@ import { chunks } from "../src/app/chunks-pg";
 //   voice_settings: VoiceSettings
 // }
 
-const data_dir = "./public/audio/pg";
+const data_dir = "./public/audio/TFPG";
 const CHUNK_SIZE = 1024;
 // const voiceId = "eXveFzitr3hBwS16SAe9" //generic middle aged man
 // const voiceId = "P25p1uquqiW4omiQ3iXp" //paul graham
@@ -29,7 +29,7 @@ const headers = {
 async function persistAudio(id: string, text: string) {
   const data = {
     text,
-    model_id: "eleven_multilingual_v2",
+    model_id: "eleven_multilingual_v1",
     // eleven_turbo_v2
     voice_settings: {
       stability: 0.5,

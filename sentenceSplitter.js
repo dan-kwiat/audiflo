@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = require("fs");
 var generateChunksText = function (sentences) {
   var chunks = sentences.map(function (sentence, index) {
-    return "`" + sentence.trim() + ".`";
+    // Remove dashes followed by a space from the sentence
+    var cleanedSentence = sentence.replace(/-\n/g, "");
+    return "`" + cleanedSentence.trim() + ".`";
   });
   return "export const chunks = [\n  " + chunks.join(",\n  ") + "\n];";
 };

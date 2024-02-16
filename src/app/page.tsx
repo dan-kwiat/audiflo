@@ -34,7 +34,7 @@ export default function Page() {
 
   useEffect(() => {
     console.log("playing", cursorIndex);
-    var audio = new Audio(`/audio/pg/audio-${cursorIndex}.mp3`);
+    var audio = new Audio(`/audio/tfpg/audio-${cursorIndex}.mp3`);
     audioRef.current = audio;
     audio.playbackRate = speed;
     if (cursorIndex > -1) {
@@ -87,7 +87,7 @@ export default function Page() {
   // }, [reading, cursorIndex])
   return (
     <div className="pt-12 pb-36 lg:pt-24">
-      <article className="prose lg:prose-2xl mx-auto dark:prose-invert px-2">
+      <article className="prose lg:prose-2xl mx-auto  px-2">
         {/* <div className="max-w-screen-lg mx-auto border-x p-4 space-y-4"> */}
         <h2 className="uppercase text-gray-400 dark:text-gray-800">
           The Final Pagan Generation
@@ -113,7 +113,7 @@ export default function Page() {
       </article>
       <div className="fixed bottom-4 right-4 space-y-2"></div>
       <div className="fixed inset-x-0 bottom-0 z-10 lg:left-112 xl:left-120">
-        <div className="bg-white/90 px-4 py-4 shadow shadow-slate-200/80 ring-1 ring-slate-900/5 backdrop-blur-sm md:px-6">
+        <div className="bg-white px-4 py-4 shadow shadow-slate-200/80 ring-1 ring-slate-900/5 backdrop-blur-sm md:px-6">
           <div className="max-w-screen-lg mx-auto flex items-center gap-6 ">
             <Button>
               {reading ? (
