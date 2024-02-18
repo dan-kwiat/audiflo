@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button";
 import { PauseCircleIcon, PlayCircleIcon } from "@heroicons/react/16/solid";
-import { chunks } from "./chunks-TFPG.ts";
+import { chunks } from "./chunks-TFPG";
 import Record from "@/components/record";
 import {
   Alert,
@@ -141,12 +141,18 @@ export default function Page() {
               }}
             />
             <Slider
-              numberFormatter={{ format: (x) => `${x}x` }}
+              numberFormatter={
+                new Intl.NumberFormat("en-US", {
+                  // Customize your number formatting options here
+                  style: "decimal", // This is just an example; adjust as needed
+                })
+              }
               maxValue={chunks.length}
               step={1}
               value={[cursorIndex + 1]}
               onChangeEnd={([value]) => setCursorIndex(value - 1)}
             />
+
             <Button
               onClick={() => {
                 if (speed >= 2) {
