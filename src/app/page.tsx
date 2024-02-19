@@ -46,7 +46,7 @@ export default function Page() {
 
   useEffect(() => {
     console.log("playing", cursorIndex);
-    var audio = new Audio(`/audio/tfpg/audio-${cursorIndex}.mp3`);
+    var audio = new Audio(`/audio/TFPG/audio-${cursorIndex}.mp3`);
     audioRef.current = audio;
     audio.playbackRate = speed;
     if (cursorIndex > -1) {
